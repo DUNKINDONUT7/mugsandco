@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { ArrowRight, Facebook, LogIn, Menu, X } from 'lucide-react'
+import { ArrowRight, Facebook, LogIn, Menu, Search, SlidersHorizontal, X } from 'lucide-react'
 import { supabase } from '@/lib/supabase'
 
 const fallbackProducts = [
@@ -13,6 +13,9 @@ const fallbackProducts = [
 export default function Home() {
   const [menuOpen, setMenuOpen] = useState(false)
   const [products, setProducts] = useState(fallbackProducts)
+  const [search, setSearch] = useState('')
+  const [activeTone, setActiveTone] = useState('all')
+  const [selectedProduct, setSelectedProduct] = useState<(typeof fallbackProducts)[number] | null>(null)
 
   useEffect(() => {
     if (!supabase) return
@@ -33,6 +36,12 @@ export default function Home() {
         }
       })
   }, [])
+
+  const visibleProducts = products.filter((product) => {
+    const matchesTone = activeTone === 'all' || product.tone === activeTone
+    const matchesSearch = `${product.name} ${product.detail}`.toLowerCase().includes(search.toLowerCase())
+    return matchesTone && matchesSearch
+  })
 
   return (
     <main>
@@ -79,17 +88,21 @@ export default function Home() {
 
       <section className="collection section-wrap" id="collection">
         <div className="section-heading">
-          <div><p className="eyebrow">The shelf</p><h2>Pieces to keep<br /><em>close.</em></h2></div>
-          <a className="text-link" href="https://www.facebook.com/profile.php?id=61588035627320" target="_blank" rel="noreferrer">See all pieces <ArrowRight size={16} /></a>
+          <div><p className="eyebrow">The shelf</p><h2>Find your<br /><em>favorite mug.</em></h2></div>
+          <p className="collection-note">Browse the latest pieces from our studio and community makers. Every approved listing is ready for a closer look.</p>
         </div>
-        <div className="product-grid">
-          {products.map((product, index) => (
-            <a className="product-card" href="https://www.facebook.com/profile.php?id=61588035627320" target="_blank" rel="noreferrer" key={product.name}>
+        <div className="shop-toolbar">
+          <label className="shop-search"><Search size={17} /><span className="sr-only">Search mugs</span><input value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Search the shelf" /></label>
+          <div className="tone-filters" aria-label="Filter by color story"><SlidersHorizontal size={16} /><button className={activeTone === 'all' ? 'active' : ''} onClick={() => setActiveTone('all')}>All pieces</button><button className={activeTone === 'clay' ? 'active' : ''} onClick={() => setActiveTone('clay')}>Clay</button><button className={activeTone === 'sage' ? 'active' : ''} onClick={() => setActiveTone('sage')}>Sage</button><button className={activeTone === 'sky' ? 'active' : ''} onClick={() => setActiveTone('sky')}>Sky</button></div>
+        </div>
+        {visibleProducts.length ? <div className="product-grid">
+          {visibleProducts.map((product, index) => (
+            <button className="product-card" onClick={() => setSelectedProduct(product)} key={product.name}>
               <div className={`product-art ${product.tone}`}>{product.image ? <img className="product-photo" src={product.image} alt={product.name} /> : <div className="product-mug"><span>{index === 0 ? 'sunny' : index === 1 ? 'slow' : <>good<br />things</>}</span></div>}<span className="product-number">0{index + 1}</span></div>
-              <div className="product-meta"><div><h3>{product.name}</h3><p>{product.detail}</p></div><strong>{product.price}</strong></div>
-            </a>
+              <div className="product-meta"><div><h3>{product.name}</h3><p>{product.detail}</p><span className="view-piece">View piece <ArrowRight size={13} /></span></div><strong>{product.price}</strong></div>
+            </button>
           ))}
-        </div>
+        </div> : <div className="empty-shop"><Search size={22} /><h3>No pieces found</h3><p>Try another search or browse all color stories.</p><button className="text-link" onClick={() => { setSearch(''); setActiveTone('all') }}>Reset browse <ArrowRight size={15} /></button></div>}
       </section>
 
       <section className="story section-wrap" id="story">
@@ -103,6 +116,8 @@ export default function Home() {
       </section>
 
       <footer className="site-footer"><a className="brand" href="#top"><span className="brand-mark">M</span><span>Mugs <i>&</i> Co.</span></a><p>Small joys, made daily.</p><span>© 2026 Mugs & Co.</span></footer>
+
+      {selectedProduct && <div className="product-dialog-backdrop" role="presentation" onClick={() => setSelectedProduct(null)}><section className="product-dialog" role="dialog" aria-modal="true" aria-labelledby="product-dialog-title" onClick={(event) => event.stopPropagation()}><button className="dialog-close" onClick={() => setSelectedProduct(null)} aria-label="Close product details"><X size={20} /></button><div className={`dialog-art product-art ${selectedProduct.tone}`}>{selectedProduct.image ? <img className="product-photo" src={selectedProduct.image} alt={selectedProduct.name} /> : <div className="product-mug"><span>made<br /><em>for you</em></span></div>}</div><div className="dialog-copy"><p className="eyebrow">A closer look</p><h2 id="product-dialog-title">{selectedProduct.name}</h2><p>{selectedProduct.detail}</p><strong>{selectedProduct.price}</strong><span className="dialog-note">Interested in this piece? Message us on Facebook for availability, custom orders, and delivery details.</span><a className="button button-purple" href={`https://www.facebook.com/profile.php?id=61588035627320&product=${encodeURIComponent(selectedProduct.name)}`} target="_blank" rel="noreferrer"><Facebook size={16} /> Ask about this mug <ArrowRight size={16} /></a></div></section></div>}
     </main>
   )
 }

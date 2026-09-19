@@ -11,6 +11,8 @@ The active storefront is the Next.js React app. Supabase migrations create the `
 3. Run `npx supabase@latest db push --linked`.
 4. Open `/auth` to create an account, then use the dashboard at `/dashboard`.
 
+To seed the ready-to-use demo accounts, add the server-only `SUPABASE_SERVICE_ROLE_KEY` to `.env.local` from Supabase Dashboard → Project Settings → API, then run `npm run seed:accounts`. Never expose this key in client code or commit it to GitHub.
+
 New accounts are `user` accounts. After creating your own account, promote it to admin in Supabase SQL Editor:
 
 ```sql
