@@ -1,13 +1,13 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { ArrowRight, Facebook, Menu, X } from 'lucide-react'
+import { ArrowRight, Facebook, LogIn, Menu, X } from 'lucide-react'
 import { supabase } from '@/lib/supabase'
 
 const fallbackProducts = [
-  { name: 'Sunday Morning', detail: 'Hand-painted ceramic', price: '₱399', tone: 'clay' },
-  { name: 'Daily Ritual', detail: 'Stoneware coffee cup', price: '₱449', tone: 'sage' },
-  { name: 'Good Things', detail: 'Limited quote series', price: '₱499', tone: 'sky' },
+  { name: 'Sunday Morning', detail: 'Hand-painted ceramic', price: '₱399', tone: 'clay', image: null },
+  { name: 'Daily Ritual', detail: 'Stoneware coffee cup', price: '₱449', tone: 'sage', image: null },
+  { name: 'Good Things', detail: 'Limited quote series', price: '₱499', tone: 'sky', image: null },
 ]
 
 export default function Home() {
@@ -19,7 +19,7 @@ export default function Home() {
 
     supabase
       .from('products')
-      .select('id, name, detail, price, tone')
+      .select('id, name, detail, price, tone, image')
       .order('created_at', { ascending: false })
       .then(({ data }) => {
         if (data?.length) {
@@ -27,6 +27,7 @@ export default function Home() {
             name: product.name,
             detail: product.detail,
             tone: product.tone,
+            image: product.image,
             price: `₱${Number(product.price).toLocaleString('en-PH', { minimumFractionDigits: 0 })}`,
           })))
         }
@@ -47,6 +48,7 @@ export default function Home() {
           <a className="nav-order" href="https://www.facebook.com/mugsco" target="_blank" rel="noreferrer">
             Order on Facebook <ArrowRight size={15} />
           </a>
+          <a className="nav-account" href="/auth"><LogIn size={15} /> Studio login</a>
         </nav>
         <button className="menu-button" onClick={() => setMenuOpen(!menuOpen)} aria-label={menuOpen ? 'Close menu' : 'Open menu'} aria-expanded={menuOpen}>
           {menuOpen ? <X size={22} /> : <Menu size={22} />}
@@ -83,7 +85,7 @@ export default function Home() {
         <div className="product-grid">
           {products.map((product, index) => (
             <a className="product-card" href="https://www.facebook.com/mugsco" target="_blank" rel="noreferrer" key={product.name}>
-              <div className={`product-art ${product.tone}`}><span className="product-number">0{index + 1}</span><div className="product-mug"><span>{index === 0 ? 'sunny' : index === 1 ? 'slow' : <>good<br />things</>}</span></div></div>
+              <div className={`product-art ${product.tone}`}>{product.image ? <img className="product-photo" src={product.image} alt={product.name} /> : <div className="product-mug"><span>{index === 0 ? 'sunny' : index === 1 ? 'slow' : <>good<br />things</>}</span></div>}<span className="product-number">0{index + 1}</span></div>
               <div className="product-meta"><div><h3>{product.name}</h3><p>{product.detail}</p></div><strong>{product.price}</strong></div>
             </a>
           ))}

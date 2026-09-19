@@ -2,6 +2,25 @@
 
 A simple, beginner-friendly PHP and MySQL e-commerce website for selling premium ceramic mugs.
 
+## React + Supabase setup
+
+The active storefront is the Next.js React app. Supabase migrations create the `products` and `profiles` tables, the `product-images` storage bucket, authentication roles, and product approval policies.
+
+1. Copy `.env.example` to `.env.local` and add the Supabase URL and publishable key.
+2. Run `npx supabase@latest link --project-ref YOUR_PROJECT_REF`.
+3. Run `npx supabase@latest db push --linked`.
+4. Open `/auth` to create an account, then use the dashboard at `/dashboard`.
+
+New accounts are `user` accounts. After creating your own account, promote it to admin in Supabase SQL Editor:
+
+```sql
+update public.profiles
+set role = 'admin'
+where id = (select id from auth.users where email = 'YOUR_EMAIL');
+```
+
+Users can upload product images and submit products for review. Admins can approve, reject, publish, and delete listings.
+
 ## Features
 
 - **Frontend Store** (`index.php`) - Display products with hero section and navigation
