@@ -1,7 +1,7 @@
 <?php
 include 'db.php';
 $products = getAllProducts($conn);
-$facebookLink = 'https://www.facebook.com/mugsco'; // Update with your Facebook page
+$facebookLink = 'https://www.facebook.com/profile.php?id=61588035627320';
 ?>
 
 <!DOCTYPE html>

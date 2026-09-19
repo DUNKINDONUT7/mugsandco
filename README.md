@@ -104,7 +104,7 @@ Create these folders in your project:
 ### Update Facebook Link
 Edit `index.php` and find this line:
 ```php
-$facebookLink = 'https://www.facebook.com/mugsco'; // Update with your Facebook page
+$facebookLink = 'https://www.facebook.com/profile.php?id=61588035627320';
 ```
 Replace with your actual Facebook page URL.
 

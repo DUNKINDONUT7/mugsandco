@@ -45,7 +45,7 @@ export default function Home() {
           <a href="#collection" onClick={() => setMenuOpen(false)}>Collection</a>
           <a href="#story" onClick={() => setMenuOpen(false)}>Our story</a>
           <a href="#contact" onClick={() => setMenuOpen(false)}>Contact</a>
-          <a className="nav-order" href="https://www.facebook.com/mugsco" target="_blank" rel="noreferrer">
+          <a className="nav-order" href="https://www.facebook.com/profile.php?id=61588035627320" target="_blank" rel="noreferrer">
             Order on Facebook <ArrowRight size={15} />
           </a>
           <a className="nav-account" href="/auth"><LogIn size={15} /> Studio login</a>
@@ -80,11 +80,11 @@ export default function Home() {
       <section className="collection section-wrap" id="collection">
         <div className="section-heading">
           <div><p className="eyebrow">The shelf</p><h2>Pieces to keep<br /><em>close.</em></h2></div>
-          <a className="text-link" href="https://www.facebook.com/mugsco" target="_blank" rel="noreferrer">See all pieces <ArrowRight size={16} /></a>
+          <a className="text-link" href="https://www.facebook.com/profile.php?id=61588035627320" target="_blank" rel="noreferrer">See all pieces <ArrowRight size={16} /></a>
         </div>
         <div className="product-grid">
           {products.map((product, index) => (
-            <a className="product-card" href="https://www.facebook.com/mugsco" target="_blank" rel="noreferrer" key={product.name}>
+            <a className="product-card" href="https://www.facebook.com/profile.php?id=61588035627320" target="_blank" rel="noreferrer" key={product.name}>
               <div className={`product-art ${product.tone}`}>{product.image ? <img className="product-photo" src={product.image} alt={product.name} /> : <div className="product-mug"><span>{index === 0 ? 'sunny' : index === 1 ? 'slow' : <>good<br />things</>}</span></div>}<span className="product-number">0{index + 1}</span></div>
               <div className="product-meta"><div><h3>{product.name}</h3><p>{product.detail}</p></div><strong>{product.price}</strong></div>
             </a>
@@ -99,7 +99,7 @@ export default function Home() {
 
       <section className="contact" id="contact">
         <div><p className="eyebrow">Come say hello</p><h2>Have a mug<br /><em>in mind?</em></h2></div>
-        <div className="contact-action"><p>Send us a message for current pieces, custom orders, and gifting.</p><a className="button button-light" href="https://www.facebook.com/mugsco" target="_blank" rel="noreferrer"><Facebook size={17} /> Visit our Facebook <ArrowRight size={17} /></a></div>
+        <div className="contact-action"><p>Send us a message for current pieces, custom orders, and gifting.</p><a className="button button-light" href="https://www.facebook.com/profile.php?id=61588035627320" target="_blank" rel="noreferrer"><Facebook size={17} /> Visit our Facebook <ArrowRight size={17} /></a></div>
       </section>
 
       <footer className="site-footer"><a className="brand" href="#top"><span className="brand-mark">M</span><span>Mugs <i>&</i> Co.</span></a><p>Small joys, made daily.</p><span>© 2026 Mugs & Co.</span></footer>
